@@ -1,0 +1,9 @@
+target/**
+mvnw*
+.git/**
+.mvn/**
+.settings/**
+.classpath
+.factorypath
+.gitignore
+.project
