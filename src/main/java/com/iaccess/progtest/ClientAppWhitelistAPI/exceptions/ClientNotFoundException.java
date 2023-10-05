@@ -4,14 +4,8 @@ package com.iaccess.progtest.ClientAppWhitelistAPI.exceptions;
  * 
  */
 
-public class ClientNotFoundException extends Exception {
-
-	public ClientNotFoundException(String errorMessage) {
-		super(errorMessage);
+public class ClientNotFoundException extends ResourceNotFoundException {
+	public ClientNotFoundException(String message) {
+		super(message);
 	}
-
-	public ClientNotFoundException(String errorMessage, Throwable err) {
-		super(errorMessage, err);
-	}
-
 }

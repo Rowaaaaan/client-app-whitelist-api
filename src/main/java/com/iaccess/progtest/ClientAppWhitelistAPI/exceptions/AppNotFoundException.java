@@ -4,13 +4,8 @@ package com.iaccess.progtest.ClientAppWhitelistAPI.exceptions;
  * 
  */
 
-public class AppNotFoundException extends Exception {
-
-	public AppNotFoundException(String errorMessage) {
-		super(errorMessage);
-	}
-
-	public AppNotFoundException(String errorMessage, Throwable err) {
-		super(errorMessage, err);
+public class AppNotFoundException extends ResourceNotFoundException {
+	public AppNotFoundException(String message) {
+		super(message);
 	}
 }
