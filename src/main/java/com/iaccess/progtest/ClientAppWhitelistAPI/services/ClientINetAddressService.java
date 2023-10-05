@@ -1,11 +1,14 @@
 package com.iaccess.progtest.ClientAppWhitelistAPI.services;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.iaccess.progtest.ClientAppWhitelistAPI.exceptions.ClientINetAddressAlreadyExistsException;
+import com.iaccess.progtest.ClientAppWhitelistAPI.exceptions.ClientINetAddressNotFoundException;
 import com.iaccess.progtest.ClientAppWhitelistAPI.models.ClientINetAddress;
 import com.iaccess.progtest.ClientAppWhitelistAPI.repositories.ClientINetAddressRepository;
 
@@ -25,22 +28,46 @@ public class ClientINetAddressService {
 		return ipv4Addresses;
 	}
 
-	public ClientINetAddress get(String ip) {
-		return null;
+	public ClientINetAddress get(ClientINetAddress inetAddress) throws ClientINetAddressNotFoundException {
+		String ipv4 = inetAddress.getIpv4();
+		Optional<ClientINetAddress> requestedInetAddress = clientInetAddressRepository.findById(ipv4);
+
+		if (requestedInetAddress.isEmpty()) {
+			throw new ClientINetAddressNotFoundException("Client IPv4 address [" + ipv4 + "] not found!");
+		} else {
+			return requestedInetAddress.get();
+		}
+
 	}
 
-	public void save(ClientINetAddress clientAddress) {
-		clientInetAddressRepository.save(clientAddress);
+	public ClientINetAddress getByIpv4(String ipv4) throws ClientINetAddressNotFoundException {
+		Optional<ClientINetAddress> requestedInetAddress = clientInetAddressRepository.findById(ipv4);
+
+		if (requestedInetAddress.isEmpty()) {
+			throw new ClientINetAddressNotFoundException("Client IPv4 address [" + ipv4 + "] not found!");
+		} else {
+			return requestedInetAddress.get();
+		}
 	}
 
-	public void delete(String ip) {
-		clientInetAddressRepository.deleteById(ip);
+	public void save(ClientINetAddress clientAddress) throws ClientINetAddressAlreadyExistsException {
+		String ipv4 = clientAddress.getIpv4();
+		if (!clientInetAddressRepository.existsByIpv4(ipv4)) {
+			clientInetAddressRepository.save(clientAddress);
+		} else {
+			throw new ClientINetAddressAlreadyExistsException("Client Inet Address [" + ipv4 + "]  already exists!");
+		}
+	}
+
+	public boolean exists(String ipv4) {
+		return clientInetAddressRepository.existsByIpv4(ipv4);
+	}
+
+	public void delete(String ipv4Address) {
+		clientInetAddressRepository.deleteByIpv4(ipv4Address);
 	}
 
 	public void delete(ClientINetAddress clientAddress) {
 		clientInetAddressRepository.delete(clientAddress);
 	}
-
-	// public Set<Client> getClientsByIp(String ip) {
-	// }
 }

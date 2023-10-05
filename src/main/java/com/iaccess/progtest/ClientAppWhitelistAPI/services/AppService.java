@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.iaccess.progtest.ClientAppWhitelistAPI.exceptions.AppNotFoundException;
 import com.iaccess.progtest.ClientAppWhitelistAPI.models.App;
 import com.iaccess.progtest.ClientAppWhitelistAPI.repositories.AppRepository;
 
@@ -27,14 +28,18 @@ public class AppService {
 		appRepository.save(app);
 	}
 
-	public Optional<App> get(Long id) {
-		return appRepository.findById(id);
+	public App get(Long id) throws AppNotFoundException {
+		Optional<App> requestedApp = appRepository.findById(id);
+
+		if (requestedApp.isEmpty()) {
+			throw new AppNotFoundException("App not found!");
+		} else {
+			return requestedApp.get();
+		}
 	}
 
 	public List<App> getAll() {
-		List<App> appsList = new ArrayList<>();
-		appRepository.findAll().forEach(appsList::add);
-		return appsList;
+		return appRepository.findAll();
 	}
 
 }

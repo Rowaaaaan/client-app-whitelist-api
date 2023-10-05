@@ -1,10 +1,12 @@
 package com.iaccess.progtest.ClientAppWhitelistAPI.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.iaccess.progtest.ClientAppWhitelistAPI.exceptions.ClientNotFoundException;
 import com.iaccess.progtest.ClientAppWhitelistAPI.models.Client;
 import com.iaccess.progtest.ClientAppWhitelistAPI.repositories.ClientRepository;
 
@@ -18,8 +20,14 @@ public class ClientService {
 		return clientRepository.findAll();
 	}
 
-	public Client get(Long id) {
-		return clientRepository.getReferenceById(id);
+	public Client get(Long id) throws ClientNotFoundException {
+		Optional<Client> requestedClient = clientRepository.findById(id);
+
+		if (requestedClient.isEmpty()) {
+			throw new ClientNotFoundException("Client not found!");
+		} else {
+			return requestedClient.get();
+		}
 	}
 
 	public void save(Client client) {
