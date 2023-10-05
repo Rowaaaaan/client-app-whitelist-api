@@ -63,7 +63,7 @@ public class ClientINetAddressService {
 		return clientInetAddressRepository.existsByIpv4(ipv4);
 	}
 
-	public void delete(String ipv4Address) {
+	public void deleteByIpv4(String ipv4Address) {
 		clientInetAddressRepository.deleteByIpv4(ipv4Address);
 	}
 

@@ -8,8 +8,6 @@ import org.springframework.stereotype.Service;
 
 import com.iaccess.progtest.ClientAppWhitelistAPI.ProductionEnvironment;
 import com.iaccess.progtest.ClientAppWhitelistAPI.exceptions.AppNotFoundException;
-import com.iaccess.progtest.ClientAppWhitelistAPI.exceptions.ClientINetAddressAlreadyExistsException;
-import com.iaccess.progtest.ClientAppWhitelistAPI.exceptions.ClientINetAddressNotFoundException;
 import com.iaccess.progtest.ClientAppWhitelistAPI.exceptions.ClientNotFoundException;
 import com.iaccess.progtest.ClientAppWhitelistAPI.exceptions.ResourceAlreadyExistsException;
 import com.iaccess.progtest.ClientAppWhitelistAPI.exceptions.ResourceNotFoundException;

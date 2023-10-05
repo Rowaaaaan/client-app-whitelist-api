@@ -32,7 +32,7 @@ public class AppService {
 		Optional<App> requestedApp = appRepository.findById(id);
 
 		if (requestedApp.isEmpty()) {
-			throw new AppNotFoundException("App not found!");
+			throw new AppNotFoundException("App id [" + id + "] not found!");
 		} else {
 			return requestedApp.get();
 		}
