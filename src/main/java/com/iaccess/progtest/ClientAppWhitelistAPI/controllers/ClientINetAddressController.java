@@ -8,38 +8,43 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.iaccess.progtest.ClientAppWhitelistAPI.exceptions.ClientINetAddressAlreadyExistsException;
+import com.iaccess.progtest.ClientAppWhitelistAPI.exceptions.ClientINetAddressNotFoundException;
 import com.iaccess.progtest.ClientAppWhitelistAPI.models.ClientINetAddress;
 import com.iaccess.progtest.ClientAppWhitelistAPI.services.ClientINetAddressService;
 
 @RestController
+@RequestMapping("/whitelists/ips")
 public class ClientINetAddressController {
 
 	@Autowired
 	private ClientINetAddressService clientInetService;
 
-	@GetMapping("/whitelisted-ips")
+	@GetMapping
 	public List<String> getAllAddresses() {
 		return clientInetService.getAll();
 	}
 
-	@GetMapping("/whitelisted-ips/{ip}")
-	public ClientINetAddress getClientsFromIp(@PathVariable String ip) {
-		return clientInetService.get(ip);
+	@GetMapping("/{ip}")
+	public ClientINetAddress getClientsFromIp(@PathVariable String ip) throws ClientINetAddressNotFoundException {
+		return clientInetService.getByIpv4(ip);
 	}
 
-	@PostMapping("/whitelisted-ips")
-	public void saveClientIp(@RequestBody ClientINetAddress clientAddress) {
+	@PostMapping
+	public void saveClientIp(@RequestBody ClientINetAddress clientAddress)
+			throws ClientINetAddressAlreadyExistsException {
 		clientInetService.save(clientAddress);
 	}
 
-	@DeleteMapping("/whitelisted-ips/{ip}")
+	@DeleteMapping("/{ip}")
 	public void deleteIp(@PathVariable String ip) {
-		clientInetService.delete(ip);
+		clientInetService.deleteByIpv4(ip);
 	}
 
-	@DeleteMapping("/whitelisted-ips")
+	@DeleteMapping
 	public void deleteClientFromIp(@RequestBody ClientINetAddress clientAddress) {
 		clientInetService.delete(clientAddress);
 	}
